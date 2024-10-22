@@ -7,19 +7,17 @@ public class Ball : MonoBehaviour
 {
 
     [SerializeField] Camera mainCamera;
-    [SerializeField] float initMoveSpeed = 5f;
     [SerializeField] float stopThreshold = 0.1f;
-    [SerializeField] float slowRate = 2f;
-    [SerializeField] float normalDrag = 0f;
+    [SerializeField] float slowRate = 0.2f;
+    [SerializeField] float normalDrag = 0.05f;
     [SerializeField] float greenDrag = 2f;
     [SerializeField] TextMeshProUGUI powertext;
 
     private Vector3 targetPosition;
     private Vector3 dragStartPos;
-    private bool isMoving = false;
     private bool isDragging = false;
     private Rigidbody rb;
-    private float moveSpeed;
+    //private float moveSpeed;
     private float shotPower = 0f;
     private float maxPower = 100f;
 
@@ -28,7 +26,7 @@ public class Ball : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
-        moveSpeed = initMoveSpeed;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.drag = normalDrag;
         powertext.gameObject.SetActive(false);
     }
@@ -37,7 +35,19 @@ public class Ball : MonoBehaviour
     void Update()
     {
         HandleInput();
-        MoveBall();
+    }
+
+    void FixedUpdate()
+    {
+        if (rb.velocity.magnitude > stopThreshold)
+        {
+            rb.drag = Mathf.Lerp(rb.drag, slowRate, Time.deltaTime);
+        }
+        else if (rb.velocity.magnitude <= stopThreshold && rb.velocity.magnitude != 0)
+        {
+            rb.velocity = Vector3.zero;
+            rb.drag = normalDrag;
+        }
     }
 
     void HandleInput()
@@ -59,7 +69,7 @@ public class Ball : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Fire1") && isDragging)
+        if (isDragging)
         {
             Vector3 currentMousePos = Input.mousePosition;
             float dragDistance = Vector3.Distance(dragStartPos, currentMousePos);
@@ -68,7 +78,7 @@ public class Ball : MonoBehaviour
 
             powertext.text = "Power: " + Mathf.RoundToInt(shotPower).ToString();
 
-            if (Input.GetMouseButtonUp(0) && isDragging)
+            if (Input.GetMouseButtonUp(0))
             {
                 isDragging = false;
                 powertext.gameObject.SetActive(false);
@@ -87,43 +97,20 @@ public class Ball : MonoBehaviour
         Debug.Log("Apllied force with power: " + power);
     }
 
-    void MoveBall()
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (isMoving)
-        {
-
-                Vector3 newXZPosition = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
-                Vector3 newPosition = Vector3.MoveTowards(transform.position, newXZPosition, moveSpeed * Time.deltaTime);
-
-                rb.MovePosition(newPosition);
-
-
-                if (Vector3.Distance(transform.position, newXZPosition) < stopThreshold)
-                {
-                    isMoving = false;
-                    return;
-                }
-
-                if (moveSpeed > 0)
-                {
-                    moveSpeed -= slowRate * Time.deltaTime;
-                    moveSpeed = Mathf.Max(moveSpeed, 0);
-                }
-            }
-        }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Green"))
+        Debug.Log("Collision detected with: " + other.gameObject.name);
+        if (other.gameObject.CompareTag("Green"))
         {
             rb.drag = greenDrag;
             Debug.Log("Ball on green");
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.gameObject.CompareTag("Green"))
+        if (other.gameObject.CompareTag("Green"))
         {
             rb.drag = normalDrag;
             Debug.Log("Ball NOT on green");
@@ -131,11 +118,35 @@ public class Ball : MonoBehaviour
     }
 }
 
+//void MoveBall()
+//{
+//    if (isMoving)
+//    {
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Hole"))
-    //    {
-    //        //Ball has entered hole move to next one
-    //    }
-    //}
+//            Vector3 newXZPosition = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
+//            Vector3 newPosition = Vector3.MoveTowards(transform.position, newXZPosition, moveSpeed * Time.deltaTime);
+
+//            rb.MovePosition(newPosition);
+
+
+//            if (Vector3.Distance(transform.position, newXZPosition) < stopThreshold)
+//            {
+//                isMoving = false;
+//                return;
+//            }
+
+//            if (moveSpeed > 0)
+//            {
+//                moveSpeed -= slowRate * Time.deltaTime;
+//                moveSpeed = Mathf.Max(moveSpeed, 0);
+//            }
+//        }
+//    }
+
+//private void OnCollisionEnter(Collision collision)
+//{
+//    if (collision.gameObject.CompareTag("Hole"))
+//    {
+//        //Ball has entered hole move to next one
+//    }
+//}
