@@ -10,14 +10,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject golfBallPrefab;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private TextMeshProUGUI powertext;
+    [SerializeField] private TextMeshProUGUI strokeCountText;
 
     private GameObject currentBall;
+    private int strokeCount = 0;
 
     // Start is called before the first frame update
+
     void Start()
     {
+        if (strokeCountText == null)
+        {
+            Debug.Log("stroke error");
+        }
         SpawnGolfBall();
+        UpdateStrokeUI();
     }
+
+
 
     // Update is called once per frame
     void Update()
@@ -40,5 +50,18 @@ public class GameManager : MonoBehaviour
     public void RespawnGolfBall()
     {
         SpawnGolfBall();
+    }
+
+    public void AddStroke()
+    {
+        strokeCount++;
+        Debug.Log("Stroke added " + strokeCount);
+        UpdateStrokeUI();
+    }
+
+    private void UpdateStrokeUI()
+    {
+        strokeCountText.text = "Strokes: " + strokeCount;
+        Debug.Log("Stroke upadated to " + strokeCountText.text);
     }
 }

@@ -107,7 +107,7 @@ public class Ball : MonoBehaviour
     void ApplyForce(Vector3 direction, float power)
     {
         float force = power * 0.05f;
-        float variabilityFactor = power * 0.001f;
+        float variabilityFactor = power * 0.002f;
         float offset = Random.Range(-variabilityFactor, variabilityFactor);
 
         Vector3 adjustedDirection = new Vector3(direction.x, 0, direction.y + offset);
@@ -115,11 +115,25 @@ public class Ball : MonoBehaviour
         rb.AddForce(adjustedDirection * force, ForceMode.Impulse);
         Debug.Log("Apllied force with power: " + power + " and variablility: " + offset);
 
+        if (gameManager != null)
+        {
+            gameManager.AddStroke();
+        }
+        else
+        {
+            Debug.Log("GameManager error");
+        }
         StartCoroutine(HeightEffect(power));
     }
 
     private IEnumerator HeightEffect(float power)
     {
+
+        if (isOnGreen)
+        {
+            yield break;
+        }
+
         Vector3 ogScale = transform.localScale;
 
         float minHeight = 1.05f;
@@ -170,6 +184,12 @@ public class Ball : MonoBehaviour
         else if (other.gameObject.CompareTag("Water"))
         {
             Debug.Log("Ball is in water");
+            gameManager.RespawnGolfBall();
+            Destroy(gameObject);
+        }
+        else if (other.gameObject.CompareTag("Pin"))
+        {
+            Debug.Log("Ball has gone in");
             gameManager.RespawnGolfBall();
             Destroy(gameObject);
         }
