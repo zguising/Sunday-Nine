@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private TextMeshProUGUI powertext;
     [SerializeField] private TextMeshProUGUI strokeCountText;
+    [SerializeField] private Slider powerSlider;
 
     private GameObject currentBall;
     private int strokeCount = 0;
@@ -44,7 +46,7 @@ public class GameManager : MonoBehaviour
 
         currentBall = Instantiate(golfBallPrefab, ballSpawnerPos.position, Quaternion.identity);
         Ball ballScript = currentBall.GetComponent<Ball>();
-        ballScript.InitializeBall(mainCamera, powertext);
+        ballScript.InitializeBall(mainCamera, powertext, powerSlider);
     }
 
     public void RespawnGolfBall()

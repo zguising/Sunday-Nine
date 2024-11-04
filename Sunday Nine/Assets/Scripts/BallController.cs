@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Ball : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Ball : MonoBehaviour
     [SerializeField] float slowRate = 0.05f;
     [SerializeField] float normalDrag = 0.02f;
     [SerializeField] float greenDrag = 2f;
+    [SerializeField] private Color minPowerColor = Color.green;
+    [SerializeField] private Color maxPowerColor = Color.red;
 
     private bool isOnGreen = false;
 
@@ -23,6 +26,7 @@ public class Ball : MonoBehaviour
     private float maxPower = 100f;
 
     private GameManager gameManager;
+    private Slider powerSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -35,11 +39,12 @@ public class Ball : MonoBehaviour
 
     }
 
-    public void InitializeBall(Camera camera, TextMeshProUGUI powertextUI)
+    public void InitializeBall(Camera camera, TextMeshProUGUI powertextUI, Slider powerSliderUI)
     {
         mainCamera = camera;
         powertext = powertextUI;
-
+        powerSlider = powerSliderUI;
+        powerSlider.gameObject.SetActive(false);
         powertext.gameObject.SetActive(false);
     }
 
@@ -62,6 +67,14 @@ public class Ball : MonoBehaviour
         }
     }
 
+    private void UpdatePowerUI()
+    {
+        powertext.text = "Power: " + Mathf.RoundToInt(shotPower).ToString();
+        powerSlider.value = shotPower;
+        Color currentColor = Color.Lerp(minPowerColor, maxPowerColor, shotPower / maxPower);
+        powerSlider.fillRect.GetComponent<Image>().color = currentColor;
+    }
+
     void HandleInput()
     {
         if (Input.GetButtonDown("Fire1"))
@@ -78,7 +91,9 @@ public class Ball : MonoBehaviour
                     dragStartPos = Input.mousePosition;
                     isDragging = true;
                     shotPower = 0f;
+                    powerSlider.value = shotPower;
                     powertext.gameObject.SetActive(true);
+                    powerSlider.gameObject.SetActive(true);
                 }
             }
         }
@@ -90,12 +105,13 @@ public class Ball : MonoBehaviour
 
             shotPower = Mathf.Clamp(dragDistance, 0, maxPower);
 
-            powertext.text = "Power: " + Mathf.RoundToInt(shotPower).ToString();
-
+            UpdatePowerUI();
+;
             if (Input.GetMouseButtonUp(0))
             {
                 isDragging = false;
                 powertext.gameObject.SetActive(false);
+                powerSlider.gameObject.SetActive(false);
 
                 Vector3 dragDirection = (dragStartPos - currentMousePos).normalized;
 
