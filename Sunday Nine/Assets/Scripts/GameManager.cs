@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI strokeCountText;
     [SerializeField] private Slider powerSlider;
 
+
     private GameObject currentBall;
     private int strokeCount = 0;
 
