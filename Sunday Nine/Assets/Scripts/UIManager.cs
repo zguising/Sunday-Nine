@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI strokeCountText;
-    [SerializeField] private TextMeshProUGUI holeScoreText;
+    //[SerializeField] private TextMeshProUGUI holeScoreText;
 
     private int strokeCount = 0;
     private int currentHole = 1;
@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
     {
         strokeCountText.text = "Strokes: " + strokeCount;
         Debug.Log("Stroke upadated to " + strokeCountText.text);
-        holeScoreText.text = "Hole: " + currentHole;
+        //holeScoreText.text = "Hole: " + currentHole;
     }
 
     // Update is called once per frame

@@ -206,6 +206,7 @@ public class Ball : MonoBehaviour
         else if (other.gameObject.CompareTag("Pin"))
         {
             Debug.Log("Ball has gone in");
+            gameManager.UpdatePerHoleScoreboard();
             gameManager.RespawnGolfBall();
             Destroy(gameObject);
         }

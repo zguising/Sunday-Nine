@@ -12,11 +12,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private TextMeshProUGUI powertext;
     [SerializeField] private TextMeshProUGUI strokeCountText;
+    [SerializeField] private TextMeshProUGUI strokePerHoleText;
     [SerializeField] private Slider powerSlider;
 
 
     private GameObject currentBall;
     private int strokeCount = 0;
+    private int currentHole = 1;
+    private int totalHoles = 9;
+    private int totalScore;
+
+    private List<int> holeScores = new List<int>();
 
     // Start is called before the first frame update
 
@@ -26,11 +32,10 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("stroke error");
         }
+        holeScores = new List<int>(new int[totalHoles]);
         SpawnGolfBall();
         UpdateStrokeUI();
     }
-
-
 
     // Update is called once per frame
     void Update()
@@ -66,5 +71,43 @@ public class GameManager : MonoBehaviour
     {
         strokeCountText.text = "Strokes: " + strokeCount;
         Debug.Log("Stroke upadated to " + strokeCountText.text);
+    }
+
+    public void UpdatePerHoleScoreboard()
+    {
+        Debug.Log("Scoreboard Update called");
+        holeScores[currentHole - 1] = strokeCount;
+        UpdateScoreboardUI();
+        strokeCount = 0;
+        currentHole++;
+    }
+
+    private void UpdateScoreboardUI()
+    {
+        Debug.Log("UpdatePerHoleScoreboardUI Called");
+        string scoreText = "Scorecard: ";
+        foreach (int score in holeScores)
+        {
+            scoreText += "|| " + score.ToString() + " ";
+        }
+
+        totalScore = 0;
+        foreach(int score in holeScores)
+        {
+            totalScore += score;
+        }
+
+        if (totalScore < 10)
+        {
+            scoreText += "|| 0" + totalScore.ToString() + " ||";
+        }
+        else
+        {
+            scoreText += "|| " + totalScore.ToString() + " ||";
+        }
+
+        strokePerHoleText.text = scoreText;
+
+        Debug.Log("Updated Scorecard: " + scoreText);
     }
 }
