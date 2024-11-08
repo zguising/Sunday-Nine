@@ -416,7 +416,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strokeCountText: {fileID: 1437534218}
-  holeScoreText: {fileID: 0}
 --- !u!4 &604718010
 Transform:
   m_ObjectHideFlags: 0
@@ -2699,7 +2698,7 @@ MonoBehaviour:
   mainCamera: {fileID: 963194227}
   powertext: {fileID: 1724442687}
   strokeCountText: {fileID: 1437534218}
-  strokePerHoleText: {fileID: 0}
+  strokePerHoleText: {fileID: 1475202039}
   powerSlider: {fileID: 697527293}
 --- !u!4 &1222799286
 Transform:
