@@ -9,6 +9,7 @@ TagManager:
   - Hole
   - Water
   - Pin
+  - OB Marker
   layers:
   - Default
   - TransparentFX

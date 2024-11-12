@@ -17,6 +17,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private Color maxPowerColor = Color.red;
 
     private bool isOnGreen = false;
+    private bool isStopped = true;
 
     private Vector3 targetPosition;
     private Vector3 dragStartPos;
@@ -27,6 +28,11 @@ public class Ball : MonoBehaviour
 
     private GameManager gameManager;
     private Slider powerSlider;
+    private bool isInAir = false;
+    private bool isOutOfBounds = false;
+    private bool onPin = false;
+
+    private GameObject shadow;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +42,7 @@ public class Ball : MonoBehaviour
         rb.drag = normalDrag;
 
         gameManager = FindObjectOfType<GameManager>();
-
+        shadow = transform.Find("Shadow").gameObject;
     }
 
     public void InitializeBall(Camera camera, TextMeshProUGUI powertextUI, Slider powerSliderUI)
@@ -52,6 +58,17 @@ public class Ball : MonoBehaviour
     void Update()
     {
         HandleInput();
+
+        if (isOutOfBounds && rb.velocity.magnitude <= stopThreshold)
+        {
+            RespawnOutOfBounds();
+        }
+        if (onPin && rb.velocity.magnitude <= stopThreshold)
+        {
+            gameManager.UpdatePerHoleScoreboard();
+            gameManager.RespawnGolfBall();
+            Destroy(gameObject);
+        }
     }
 
     void FixedUpdate()
@@ -59,11 +76,13 @@ public class Ball : MonoBehaviour
         if (rb.velocity.magnitude > stopThreshold)
         {
             rb.drag = Mathf.Lerp(rb.drag, slowRate, Time.deltaTime * 0.5f);
+            isStopped = false;
         }
         else if (rb.velocity.magnitude <= stopThreshold && rb.velocity.magnitude != 0)
         {
             rb.velocity = Vector3.zero;
             rb.drag = normalDrag;
+            isStopped = true;
         }
     }
 
@@ -77,7 +96,7 @@ public class Ball : MonoBehaviour
 
     void HandleInput()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (isStopped && Input.GetButtonDown("Fire1"))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -150,13 +169,16 @@ public class Ball : MonoBehaviour
             yield break;
         }
 
+        isInAir = true;
         Vector3 ogScale = transform.localScale;
+        Vector3 shadowOgScale = shadow.transform.localScale;
 
         float minHeight = 1.05f;
         float maxHieght = 1.6f;
         float heigthMultiplier = Mathf.Lerp(minHeight, maxHieght, power / maxPower);
 
         Vector3 targetScale = ogScale * 1.5f;
+        Vector3 shadowTargetScale = shadowOgScale * 1.4f;
 
         float minDuration = 0.5f;
         float maxDuration = 2.5f;
@@ -169,22 +191,27 @@ public class Ball : MonoBehaviour
         while (elaspedTime < duration / 2)
         {
             transform.localScale = Vector3.Lerp(ogScale, targetScale, elaspedTime / (duration / 2));
+            shadow.transform.localScale = Vector3.Lerp(shadowOgScale, shadowTargetScale, elaspedTime / (duration / 2));
             elaspedTime += Time.deltaTime;
             yield return null;
         }
 
         transform.localScale = targetScale;
+        shadow.transform.localScale = shadowTargetScale;
 
         elaspedTime = 0f;
 
         while (elaspedTime < duration / 2)
         {
             transform.localScale = Vector3.Lerp(targetScale, ogScale, elaspedTime / (duration / 2));
+            shadow.transform.localScale = Vector3.Lerp(shadowTargetScale, shadowOgScale, elaspedTime / (duration / 2));
             elaspedTime += Time.deltaTime;
             yield return null;
         }
 
         transform.localScale = ogScale;
+        shadow.transform.localScale = shadowOgScale;
+        isInAir = false;
     }
 
 
@@ -199,14 +226,32 @@ public class Ball : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Water"))
         {
+            if (isInAir)
+            {
+                Debug.Log("Ball is over water");
+                isOutOfBounds = true;
+                return;
+            }
             Debug.Log("Ball is in water");
             gameManager.RespawnGolfBall();
             Destroy(gameObject);
         }
         else if (other.gameObject.CompareTag("Pin"))
         {
+            if (isInAir)
+            {
+                Debug.Log("Ball is in air and will not collide");
+                onPin = true;
+                return;
+            }
             Debug.Log("Ball has gone in");
             gameManager.UpdatePerHoleScoreboard();
+            gameManager.RespawnGolfBall();
+            Destroy(gameObject);
+        }
+        else if (other.gameObject.CompareTag("OB Marker"))
+        {
+            Debug.Log("Ball is OB");
             gameManager.RespawnGolfBall();
             Destroy(gameObject);
         }
@@ -220,6 +265,23 @@ public class Ball : MonoBehaviour
             rb.drag = normalDrag;
             Debug.Log("Ball NOT on green");
         }
+        else if (other.gameObject.CompareTag("Water"))
+        {
+            Debug.Log("Ball is out of water");
+            isOutOfBounds = false;
+        }
+        else if (other.gameObject.CompareTag("Pin"))
+        {
+            onPin = false;
+        }
+    }
+
+    private void RespawnOutOfBounds()
+    {
+        Debug.Log("Ball has been respawned");
+        isOutOfBounds = false;
+        gameManager.RespawnGolfBall();
+        Destroy(gameObject);
     }
 }
 
