@@ -45,12 +45,15 @@ public class GameManager : MonoBehaviour
 
     public void SpawnGolfBall()
     {
+
+        Transform newBallSpawnerPos = GameObject.Find("Ball Spawn Position").transform;
+
         if (currentBall != null)
         {
             Destroy(currentBall);
         }
 
-        currentBall = Instantiate(golfBallPrefab, ballSpawnerPos.position, Quaternion.identity);
+        currentBall = Instantiate(golfBallPrefab, newBallSpawnerPos.position, Quaternion.identity);
         Ball ballScript = currentBall.GetComponent<Ball>();
         ballScript.InitializeBall(mainCamera, powertext, powerSlider);
     }
