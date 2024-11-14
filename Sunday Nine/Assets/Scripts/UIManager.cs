@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void NexHtHole()
+    public void NextHole()
     {
         if (currentHole < totalHoles)
         {

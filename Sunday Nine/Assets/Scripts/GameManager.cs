@@ -24,6 +24,24 @@ public class GameManager : MonoBehaviour
 
     private List<int> holeScores = new List<int>();
 
+    private static GameManager _instance;
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<GameManager>();
+                if (_instance == null)
+                {
+                    Debug.Log("GameManager not found");
+                }
+            }
+            return _instance;
+        }
+    }
+
     // Start is called before the first frame update
 
     void Start()
@@ -32,6 +50,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("stroke error");
         }
+
+        DontDestroyOnLoad(gameObject);
         holeScores = new List<int>(new int[totalHoles]);
         SpawnGolfBall();
         UpdateStrokeUI();
