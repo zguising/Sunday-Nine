@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -51,10 +52,19 @@ public class GameManager : MonoBehaviour
             Debug.Log("stroke error");
         }
 
-        DontDestroyOnLoad(gameObject);
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("GameManager");
+
+        if (objects.Length > 1)
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(mainCamera);
         holeScores = new List<int>(new int[totalHoles]);
         SpawnGolfBall();
         UpdateStrokeUI();
+
+        SceneManager.activeSceneChanged += ActiveSceneChanged;
     }
 
     // Update is called once per frame
@@ -132,5 +142,17 @@ public class GameManager : MonoBehaviour
         strokePerHoleText.text = scoreText;
 
         Debug.Log("Updated Scorecard: " + scoreText);
+    }
+
+    public void NextHole()
+    {
+
+        Debug.Log("Loaded next hole");
+        SceneManager.LoadScene(currentHole - 1);
+    }
+
+    public void ActiveSceneChanged(Scene scene, Scene nextScene)
+    {
+        SpawnGolfBall();
     }
 }

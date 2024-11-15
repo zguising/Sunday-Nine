@@ -10,6 +10,7 @@ TagManager:
   - Water
   - Pin
   - OB Marker
+  - GameManager
   layers:
   - Default
   - TransparentFX

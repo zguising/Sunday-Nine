@@ -26,7 +26,7 @@ public class Ball : MonoBehaviour
     private float shotPower = 0f;
     private float maxPower = 100f;
 
-    private GameManager gameManager;
+    public GameManager gameManager;
     private Slider powerSlider;
     private bool isInAir = false;
     private bool isOutOfBounds = false;
@@ -41,8 +41,15 @@ public class Ball : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.drag = normalDrag;
 
-        gameManager = FindObjectOfType<GameManager>();
+        //Invoke("findGameManager", 1f);
+
+        Debug.Log(gameManager);
         shadow = transform.Find("Shadow").gameObject;
+    }
+
+    public void findGameManager()
+    {
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     public void InitializeBall(Camera camera, TextMeshProUGUI powertextUI, Slider powerSliderUI)
@@ -57,6 +64,11 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameManager == null)
+        {
+            gameManager = FindObjectOfType<GameManager>();
+        }
+
         HandleInput();
 
         if (isOutOfBounds && rb.velocity.magnitude <= stopThreshold)
@@ -246,7 +258,7 @@ public class Ball : MonoBehaviour
             }
             Debug.Log("Ball has gone in");
             gameManager.UpdatePerHoleScoreboard();
-            gameManager.RespawnGolfBall();
+            gameManager.NextHole();
             Destroy(gameObject);
         }
         else if (other.gameObject.CompareTag("OB Marker"))
