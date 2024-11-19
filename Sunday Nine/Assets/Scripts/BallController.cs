@@ -110,6 +110,7 @@ public class Ball : MonoBehaviour
     {
         if (isStopped && Input.GetButtonDown("Fire1"))
         {
+
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 

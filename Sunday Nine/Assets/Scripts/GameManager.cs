@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Slider powerSlider;
     [SerializeField] private TextMeshProUGUI holeNumberText;
     [SerializeField] private GameObject resetButton;
+    [SerializeField] private GameObject startButton;
 
 
     private GameObject currentBall;
@@ -184,11 +185,19 @@ public class GameManager : MonoBehaviour
         UpdateStrokeUI();
         UpdateScoreboardUI();
 
+        string holeText = "Hole: 1";
+        holeNumberText.text = holeText;
+
         resetButton.SetActive(false);
     }
 
     public void ShowResetButton()
     {
         resetButton.SetActive(true);
+    }
+
+    public void startGameButton()
+    {
+        startButton.SetActive(false);
     }
 }
