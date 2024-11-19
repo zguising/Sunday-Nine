@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI strokeCountText;
     [SerializeField] private TextMeshProUGUI strokePerHoleText;
     [SerializeField] private Slider powerSlider;
+    [SerializeField] private TextMeshProUGUI holeNumberText;
 
 
     private GameObject currentBall;
@@ -142,6 +143,11 @@ public class GameManager : MonoBehaviour
         strokePerHoleText.text = scoreText;
 
         Debug.Log("Updated Scorecard: " + scoreText);
+
+        string holeText = "Hole: " + (currentHole + 1);
+        holeNumberText.text = holeText;
+
+        Debug.Log(holeText);
     }
 
     public void NextHole()
