@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour
         if (currentHole > totalHoles)
         {
             ShowResetButton();
+            //ResetGame();
             return;
         }
 
@@ -178,7 +179,7 @@ public class GameManager : MonoBehaviour
         totalScore = 0;
         holeScores = new List<int>(new int[totalHoles]);
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(9);
 
         UpdateStrokeUI();
         UpdateScoreboardUI();

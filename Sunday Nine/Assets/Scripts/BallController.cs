@@ -78,7 +78,7 @@ public class Ball : MonoBehaviour
         if (onPin && rb.velocity.magnitude <= stopThreshold)
         {
             gameManager.UpdatePerHoleScoreboard();
-            gameManager.RespawnGolfBall();
+            gameManager.NextHole();
             Destroy(gameObject);
         }
     }

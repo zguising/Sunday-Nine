@@ -35,4 +35,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Hole 9.unity
     guid: 500d111d7972c4a50b6bd489eb3f49b8
+  - enabled: 1
+    path: Assets/Scenes/ResetGame.unity
+    guid: 9775cfaaeeb664de1a0c3b7233e40ab3
   m_configObjects: {}
