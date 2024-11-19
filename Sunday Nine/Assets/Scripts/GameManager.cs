@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
 
     private GameObject currentBall;
-    private int strokeCount = 0;
+    public int strokeCount = 0;
     private int currentHole = 1;
     private int totalHoles = 9;
     private int totalScore;
@@ -164,6 +164,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Loaded next hole");
         SceneManager.LoadScene(currentHole - 1);
+        UpdateStrokeUI();
     }
 
     public void ActiveSceneChanged(Scene scene, Scene nextScene)

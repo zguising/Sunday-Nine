@@ -110,6 +110,12 @@ public class Ball : MonoBehaviour
     {
         if (isStopped && Input.GetButtonDown("Fire1"))
         {
+            if (gameManager.strokeCount == 9)
+            {
+                gameManager.UpdatePerHoleScoreboard();
+                gameManager.NextHole();
+                Destroy(gameObject);
+            }
 
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
