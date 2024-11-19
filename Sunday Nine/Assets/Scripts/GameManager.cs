@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI strokePerHoleText;
     [SerializeField] private Slider powerSlider;
     [SerializeField] private TextMeshProUGUI holeNumberText;
+    [SerializeField] private GameObject resetButton;
 
 
     private GameObject currentBall;
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
         }
 
         GameObject[] objects = GameObject.FindGameObjectsWithTag("GameManager");
+        resetButton.SetActive(false);
 
         if (objects.Length > 1)
         {
@@ -152,6 +154,11 @@ public class GameManager : MonoBehaviour
 
     public void NextHole()
     {
+        if (currentHole > totalHoles)
+        {
+            ShowResetButton();
+            return;
+        }
 
         Debug.Log("Loaded next hole");
         SceneManager.LoadScene(currentHole - 1);
@@ -160,5 +167,27 @@ public class GameManager : MonoBehaviour
     public void ActiveSceneChanged(Scene scene, Scene nextScene)
     {
         SpawnGolfBall();
+    }
+
+    public void ResetGame()
+    {
+        Debug.Log("Resetting Game");
+
+        strokeCount = 0;
+        currentHole = 1;
+        totalScore = 0;
+        holeScores = new List<int>(new int[totalHoles]);
+
+        SceneManager.LoadScene(0);
+
+        UpdateStrokeUI();
+        UpdateScoreboardUI();
+
+        resetButton.SetActive(false);
+    }
+
+    public void ShowResetButton()
+    {
+        resetButton.SetActive(true);
     }
 }

@@ -1213,7 +1213,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &963194226
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1408,6 +1408,8 @@ MonoBehaviour:
   strokeCountText: {fileID: 1437534218}
   strokePerHoleText: {fileID: 1475202039}
   powerSlider: {fileID: 697527293}
+  holeNumberText: {fileID: 0}
+  resetButton: {fileID: 0}
 --- !u!4 &1222799286
 Transform:
   m_ObjectHideFlags: 0

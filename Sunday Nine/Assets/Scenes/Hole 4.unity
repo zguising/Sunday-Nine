@@ -1412,6 +1412,8 @@ MonoBehaviour:
   strokeCountText: {fileID: 1437534218}
   strokePerHoleText: {fileID: 1475202039}
   powerSlider: {fileID: 697527293}
+  holeNumberText: {fileID: 0}
+  resetButton: {fileID: 0}
 --- !u!4 &1222799286
 Transform:
   m_ObjectHideFlags: 0
@@ -2385,8 +2387,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 7.943161, y: 4.0077066, z: 2.7902384}
-  m_Center: {x: 32.399216, y: 1.5038533, z: 0.626348}
+  m_Size: {x: 7.943161, y: 4.0077066, z: 1.4331746}
+  m_Center: {x: 32.399216, y: 1.5038533, z: 1.3048799}
 --- !u!4 &1545892355
 Transform:
   m_ObjectHideFlags: 0
@@ -2396,7 +2398,7 @@ Transform:
   m_GameObject: {fileID: 1545892353}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19.9, y: 0.008652151, z: 2.99}
+  m_LocalPosition: {x: -19.9, y: 0.008652151, z: 3.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
