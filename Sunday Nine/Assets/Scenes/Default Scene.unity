@@ -2988,6 +2988,7 @@ MonoBehaviour:
   holeNumberText: {fileID: 1436840124}
   resetButton: {fileID: 1420820389}
   startButton: {fileID: 133822459}
+  strokeCount: 0
 --- !u!4 &1222799286
 Transform:
   m_ObjectHideFlags: 0
@@ -4642,14 +4643,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: Welcome to Sunday Nine! \n\n Today you will play nine holes of thrilling
     golf with each hole fully customized to present a new challenge. To play, hold
-    your mouse on the ball and pull back and let go (you will see a power meter in
-    the bottom left). No aim arc is shown adding to the difficulty! Avoid hitting
-    the ball into the water/rocks (although you may go through these two as long
-    as the ball is still moving or in the air) and out of bounds (the tan on the
-    sides and the scoreboard which you may not go through)! Have fun and aim to hit
-    the ball no more than 3 times before getting it in the hole, but no worries if
-    you don't! Each hole maxes out at 9 strokes, and most of all have fun! Click
-    anywhere to begin!!
+    your mouse on the ball, pull back and let go (you will see a power meter in the
+    bottom left). No aim arc is shown adding to the difficulty! Avoid hitting the
+    ball into the water/rocks (although you may go through these two as long as the
+    ball is still moving or in the air) and out of bounds (the tan on the sides and
+    the scoreboard which you may not go through)! Have fun and aim to hit the ball
+    no more than 3 times before getting it in the hole, but no worries if you don't!
+    Each hole maxes out at 9 strokes, and most of all have fun! Click anywhere to
+    begin!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
